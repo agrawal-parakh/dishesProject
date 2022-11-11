@@ -1,9 +1,9 @@
 const dotenv = require("dotenv");
 const express = require('express');
-const cors=require('cors');
+const cors = require('cors');
 const app = express();
 const port = 5000;
-const path = require('path'); 
+const path = require('path');
 app.use(cors());
 
 app.use(require('body-parser').json())
@@ -12,22 +12,33 @@ app.use(require('body-parser').urlencoded({ extended: true }))
 dotenv.config();
 require('./dB/connection')
 // const d=require("../frontend/src/components/Left")
-const alldishdata=require('./models/CreateDish')
-const {createDish} = require("./controllers/CreateDish")
+const alldishdata = require('./models/CreateDish')
+const { createDish } = require("./controllers/CreateDish")
 
 app.use('/', express.static(path.join(__dirname, '../frontend/build')));
 
-app.get('/getAllDishData', (req, res) => alldishdata.find({},(err,receipe)=>{
-    if(err){
-        console.log("err",err);
-    }
-    else{
-        res.send(receipe)
-    }
-}));
 
 
-app.put('/editdish', async(req,res)=>{
+app.get('/getAllDishData', (req, res) => alldishdata.find({},(err,recipe)=>{
+   if(err){
+    console.log("err",err);
+   }
+   else{
+    return res.json(recipe);
+   }
+}).sort({ createdAt: 'desc'}))
+
+
+
+
+
+
+
+
+
+
+
+app.put('/editdish', async (req, res) => {
     if (req.body._id) {
         const data = await alldishdata.findById({ _id: req.body._id });
         data.dishName = req.body.dishName;

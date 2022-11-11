@@ -37,6 +37,7 @@ function App() {
   useEffect(() => {
     axios.get('http://localhost:5000/getAllDishData')
       .then(data => {
+        console.log("checking",data)
         setRecipes(data.data);
         setVisibleRecipes([...data.data]);
       })

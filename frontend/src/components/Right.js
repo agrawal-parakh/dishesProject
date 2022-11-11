@@ -48,29 +48,26 @@ export const Right = (props) => {
 
 
         else {
-            if (chips == undefined) {
+            if (chips == undefined || chips.length==0) {
                 setShowMessage(true)
             }
             var newobj = {
-                // id: props.visibleRecipes[props.visibleRecipes.length - 1].id + 1,
                 ...dishData,
                 ingredients: [...chips]
             }
+            
 
-
-            props.setRecipes([...props.visibleRecipes, newobj])
             const { dishName, ingredients } = newobj
             axios.post('http://localhost:5000/createdish', {
                 dishName,
                 ingredients
             })
-                .then(data => console.log(data))
+                .then(data => {
+                     props.setRecipes([newobj, ...props.visibleRecipes])
+                })
                 .catch(e => {
                     console.error(e);
                 })
-            // console.log("checking flow 2");
-            
-            // window.alertmessage()
         }
     }
 
